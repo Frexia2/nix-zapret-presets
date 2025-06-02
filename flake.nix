@@ -20,6 +20,6 @@
       ] (system: f (import nixpkgs {inherit system;}));
   in {
     formatter = forAllSystems (pkgs: pkgs.alejandra);
-    nixosModules.presets = import ./module.nix self;
+    nixosModules.presets = import ./module.nix;
   };
 }
