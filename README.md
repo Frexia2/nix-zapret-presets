@@ -1,4 +1,8 @@
 This flake brings some of [Snowy-Fluffy's zapret configurations](https://github.com/Snowy-Fluffy/zapret.cfgs) to NixOS \
+
+<hr/>
+<div>
+  
 Example configuration:
 ```nix
 # flake.nix
@@ -30,6 +34,13 @@ Example configuration:
   };
 }
 ```
+</div>
+
+<hr/>
+
+<hr/>
+<div>
+
 ```nix
 # configuration.nix
 {
@@ -44,6 +55,14 @@ services = {
   };
 }
 ```
+</div>
+
+<hr/>
+
+
+<hr/>
+<div>
+  
 Available presets
 ```
         "general"
@@ -68,6 +87,10 @@ Available presets
         "russiafix"
         "renixos"
 ```
+</div>
+
+<hr/>
+
 <hr/>
 <div>
 
