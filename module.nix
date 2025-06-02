@@ -6,8 +6,8 @@ flake: {
   ...
 }: let
   cfg = config.services.zapret.sf_presets;
-  zapretBins = inputs.secret_files.packages.${pkgs.system}.files; # ${zapretBins}
-  zapretLists = inputs.zapret-hostlists.packages.${pkgs.system}.files; # ${zapretLists}
+  zapretBins = self.inputs.secret_files.packages.${pkgs.system}.files; # ${zapretBins}
+  zapretLists = self.inputs.zapret-hostlists.packages.${pkgs.system}.files; # ${zapretLists}
   extraHosts = ["github.com" "reddit.com" "google.com"];
   quotedHosts =
     (map (host: "\"${host}\"")
