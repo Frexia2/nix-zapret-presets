@@ -39,7 +39,6 @@ Example configuration:
 <hr/>
 
 <hr/>
-<div>
 
 ```nix
 # configuration.nix
