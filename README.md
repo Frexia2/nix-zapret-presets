@@ -1,4 +1,4 @@
-This flake brings some of [Snowy-Fluffy's zapret configurations](https://github.com/Snowy-Fluffy/zapret.cfgs) to NixOS \
+ <h1 This flake brings some of [Snowy-Fluffy's zapret configurations](https://github.com/Snowy-Fluffy/zapret.cfgs) to NixOS </h3> 
 
 <hr/>
 <div>
