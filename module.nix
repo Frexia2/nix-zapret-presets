@@ -1,5 +1,6 @@
 flake: {
   inputs,
+  self,
   config,
   pkgs,
   lib,
