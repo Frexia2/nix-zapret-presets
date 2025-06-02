@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-        secret_files.url = "github:kotudemo/secret_files";
+    secret_files.url = "github:kotudemo/secret_files";
     zapret-hostlists.url = "github:kotudemo/zapret-hostlists";
   };
 
