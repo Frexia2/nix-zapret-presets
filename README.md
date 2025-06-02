@@ -68,3 +68,17 @@ Available presets
         "russiafix"
         "renixos"
 ```
+
+<div>
+
+  <h3 align="center">Special Thanks: </h3>
+
+  [Snowy-Fluffy](https://github.com/Snowy-Fluffy)
+
+  [hand7s](https://github.com/s0me1newithhand7s)
+
+  [aca](https://github.com/aca/)
+  
+</div>
+
+<hr/>
