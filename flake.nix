@@ -21,7 +21,7 @@
   in {
     formatter = forAllSystems (pkgs: pkgs.alejandra);
     nixosModules.presets = {
-      self
+      self,
       config,
       pkgs,
       lib,
@@ -29,7 +29,7 @@
     }:
       import ./module.nix {
         inherit self config pkgs lib;
-       inputs = inputs; # вот здесь передаём весь inputs
+        inputs = inputs; # вот здесь передаём весь inputs
       };
   };
 }
