@@ -68,7 +68,7 @@ Available presets
         "russiafix"
         "renixos"
 ```
-
+<hr/>
 <div>
 
   <h3 align="center">Special Thanks: </h3>
