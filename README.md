@@ -1,6 +1,20 @@
  This flake brings some of [Snowy-Fluffy's zapret configurations](https://github.com/Snowy-Fluffy/zapret.cfgs) to NixOS 
+</div>
+
+<hr/>
+
+
+<hr/>
+<div>
 ### ✅ Planned Improvements
 Add all lists from original repo
+</div>
+
+<hr/>
+
+
+<hr/>
+<div>
 Example configuration:
 ```nix
 # flake.nix
