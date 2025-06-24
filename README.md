@@ -2,8 +2,9 @@
 
 ### ✅ Planned Improvements
 Add all lists from original repo
----
+
 Example configuration:
+---
 ```nix
 # flake.nix
 {
