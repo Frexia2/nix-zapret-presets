@@ -2,7 +2,7 @@
 
 ### ✅ Planned Improvements
 ---
-Add all lists from original repo
+Add all lists from original repo + ytdisbystro
 
 Example configuration:
 ---
