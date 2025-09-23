@@ -1,30 +1,40 @@
 {
-  self,
   inputs,
   config,
   pkgs,
   lib,
   ...
-}: let
+}:
+
+with lib;
+let
   cfg = config.services.zapret.sf_presets;
   zapretBins = inputs.secret_files.packages.${pkgs.system}.files; # ${zapretBins}
   zapretLists = inputs.zapret-hostlists.packages.${pkgs.system}.files; # ${zapretLists}
-  extraHosts = ["github.com" "reddit.com" "google.com"];
-  quotedHosts =
-    (map (host: "\"${host}\"")
-      (lib.splitString "\n" (lib.fileContents "${zapretLists}/lists/list-russia-blacklist.txt")))
-    ++ (map (host: "\"${host}\"") extraHosts);
-in {
+
+  blacklist =
+    (map (host: "\"${host}\"") (
+      splitString "\n" (fileContents "${zapretLists}/lists/list-russia-blacklist.txt")
+    ))
+    ++ (map (host: "\"${host}\"") [
+      "github.com"
+      "reddit.com"
+      "google.com"
+    ]);
+in
+
+{
   options.services.zapret.sf_presets = {
-    enable = lib.mkEnableOption ''
+    enable = mkEnableOption ''
       Enabling this option will allow you to activate GUI Software,
       that exist in my home-manager setup. Enabling this, as you can
       see, is depending on hostname of my system. To bypass this,
       either delete expression in `home.nix`, or change hostname
       to yours.
     '';
-    preset = lib.mkOption {
-      type = lib.types.enum [
+
+    preset = mkOption {
+      type = types.enum [
         "general"
         "general_alt"
         "general_alt2"
@@ -43,12 +53,15 @@ in {
         "ultimatefix_universalv3"
         "ultimatefix_mgts"
 
+        "mega-ultimate"
+        "testing"
+
         "preset_russia"
         "russiafix"
         "renixos"
       ];
 
-      default = "None";
+      default = "general";
 
       description = ''
         Zapret option for using a presets created by community.
@@ -59,26 +72,29 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     environment = {
       systemPackages = with pkgs; [
         inputs.secret_files.packages.${pkgs.system}.files
         inputs.zapret-hostlists.packages.${pkgs.system}.files
       ];
     };
+
     services.zapret = {
       udpSupport = true;
       configureFirewall = true;
+
       udpPorts = [
         "50000:65535"
         "443"
       ];
-      blacklist = quotedHosts;
+
+      inherit
+        blacklist
+        ;
 
       params =
-        lib.optionals (
-          cfg.preset == "general"
-        ) [
+        optionals (cfg.preset == "general") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -108,9 +124,7 @@ in {
           "--dpi-desync-fooling=badseq"
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "general_alt"
-        ) [
+        ++ optionals (cfg.preset == "general_alt") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -140,9 +154,7 @@ in {
           "--dpi-desync-fooling=badseq"
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "general_alt2"
-        ) [
+        ++ optionals (cfg.preset == "general_alt2") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -171,9 +183,7 @@ in {
           "--dpi-desync-split-pos=2"
           "--dpi-desync-split-seqovl-pattern=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "general_alt3"
-        ) [
+        ++ optionals (cfg.preset == "general_alt3") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -203,9 +213,7 @@ in {
           "--dpi-desync-fooling=badseq"
           "--dpi-desync-repeats=8"
         ]
-        ++ lib.optionals (
-          cfg.preset == "general_alt4"
-        ) [
+        ++ optionals (cfg.preset == "general_alt4") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -234,9 +242,7 @@ in {
           "--dpi-desync-fooling=md5sig"
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "general_alt5"
-        ) [
+        ++ optionals (cfg.preset == "general_alt5") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -258,9 +264,7 @@ in {
           "--dpi-desync-fooling=md5sig"
           "--new"
         ]
-        ++ lib.optionals (
-          cfg.preset == "general_alt6"
-        ) [
+        ++ optionals (cfg.preset == "general_alt6") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -291,9 +295,7 @@ in {
           "--dpi-desync-fooling=badseq"
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "general_mgts"
-        ) [
+        ++ optionals (cfg.preset == "general_mgts") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -323,9 +325,7 @@ in {
           "--dpi-desync-fooling=badseq"
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "general_mgts2"
-        ) [
+        ++ optionals (cfg.preset == "general_mgts2") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -354,9 +354,7 @@ in {
           "--dpi-desync-fooling=md5sig"
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "ultimatefix"
-        ) [
+        ++ optionals (cfg.preset == "ultimatefix") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -388,9 +386,7 @@ in {
           "--dpi-desync-fooling=badseq"
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "ultimatefix_alt"
-        ) [
+        ++ optionals (cfg.preset == "ultimatefix_alt") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -421,9 +417,7 @@ in {
           "--dpi-desync-fooling=md5sig"
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "ultimatefix_alt_extended"
-        ) [
+        ++ optionals (cfg.preset == "ultimatefix_alt_extended") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -457,9 +451,7 @@ in {
           "--dpi-desync-fooling=badseq"
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "ultimatefix_mgts"
-        ) [
+        ++ optionals (cfg.preset == "ultimatefix_mgts") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -490,9 +482,78 @@ in {
           "--dpi-desync-fooling=badseq"
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "ultimatefix_universal"
-        ) [
+        ++ optionals (cfg.preset == "ultimatefix_mgts") [
+          "--filter-udp=443"
+          "--hostlist=${zapretLists}/lists/list-ultimate.txt"
+          "--dpi-desync=fake"
+          "--dpi-desync-repeats=6"
+          "--dpi-desync-fake-quic=${zapretBins}/quic_initial_www_google_com.bin"
+          "--new"
+
+          "--filter-udp=50000-65535"
+          "--hostlist=\"/opt/zapret/ipset/ipset-discord.txt\""
+          "--dpi-desync=fake"
+          "--dpi-desync-any-protocol"
+          "--dpi-desync-cutoff=d3"
+          "--dpi-desync-repeats=6"
+          "--new"
+
+          "--filter-tcp=80"
+          "--hostlist=${zapretLists}/lists/list-basic.txt"
+          "--dpi-desync=fake,split2"
+          "--dpi-desync-autottl=2"
+          "--dpi-desync-fooling=md5sig"
+          "--new"
+
+          "--filter-tcp=443"
+          "--hostlist=${zapretLists}/lists/list-basic.txt"
+          "--dpi-desync=fake"
+          "--dpi-desync-autottl=2"
+          "--dpi-desync-repeats=6"
+          "--dpi-desync-fooling=badseq"
+          "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
+        ]
+        ++ optionals (cfg.preset == "ultimatefix_mgts") [
+          "--filter-udp=443"
+          "--hostlist=${zapretLists}/lists/ipset-discord.txt"
+          "--hostlist=${zapretLists}/lists/list-discord.txt"
+          "--hostlist=${zapretLists}/lists/list-instagram.txt"
+          "--hostlist=${zapretLists}/lists/list-nnmclub.txt"
+          "--hostlist=${zapretLists}/lists/list-rezka.txt"
+          "--hostlist=${zapretLists}/lists/list-rutracker.txt"
+          "--hostlist=${zapretLists}/lists/list-spotify.txt"
+          "--hostlist=${zapretLists}/lists/list-telegram.txt"
+          "--hostlist=${zapretLists}/lists/list-twitch.txt"
+          "--hostlist=${zapretLists}/lists/list-youtube.txt"
+          "--dpi-desync=fake"
+          "--dpi-desync-repeats=6"
+          "--dpi-desync-fake-quic=${zapretBins}/quic_initial_www_google_com.bin"
+          "--new"
+
+          "--filter-udp=50000-65535"
+          "--hostlist=\"/opt/zapret/ipset/ipset-discord.txt\""
+          "--dpi-desync=fake"
+          "--dpi-desync-any-protocol"
+          "--dpi-desync-cutoff=d3"
+          "--dpi-desync-repeats=6"
+          "--new"
+
+          "--filter-tcp=80"
+          "--hostlist=${zapretLists}/lists/list-basic.txt"
+          "--dpi-desync=fake,split2"
+          "--dpi-desync-autottl=2"
+          "--dpi-desync-fooling=md5sig"
+          "--new"
+
+          "--filter-tcp=443"
+          "--hostlist=${zapretLists}/lists/list-basic.txt"
+          "--dpi-desync=fake"
+          "--dpi-desync-autottl=2"
+          "--dpi-desync-repeats=6"
+          "--dpi-desync-fooling=badseq"
+          "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
+        ]
+        ++ optionals (cfg.preset == "ultimatefix_universal") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake"
@@ -524,9 +585,7 @@ in {
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
           "--dpi-desync-split-pos=1"
         ]
-        ++ lib.optionals (
-          cfg.preset == "ultimatefix_universalv2"
-        ) [
+        ++ optionals (cfg.preset == "ultimatefix_universalv2") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake,disorder2"
@@ -560,9 +619,7 @@ in {
           "--dpi-desync-fooling=badseq"
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "ultimatefix_universalv3"
-        ) [
+        ++ optionals (cfg.preset == "ultimatefix_universalv3") [
           "--filter-udp=443"
           "--hostlist=${zapretLists}/lists/list-basic.txt"
           "--dpi-desync=fake,split2"
@@ -596,9 +653,7 @@ in {
           "--dpi-desync-fooling=md5sig"
           "--dpi-desync-fake-tls=${zapretBins}/tls_clienthello_www_google_com.bin"
         ]
-        ++ lib.optionals (
-          cfg.preset == "preset_russia"
-        ) [
+        ++ optionals (cfg.preset == "preset_russia") [
           "--filter-tcp=80"
           "--dpi-desync=fake,split2"
           "--dpi-desync-autottl=2"
@@ -640,9 +695,7 @@ in {
           "--dpi-desync=fake"
           "--dpi-desync-repeats=11"
         ]
-        ++ lib.optionals (
-          cfg.preset == "russiafix"
-        ) [
+        ++ optionals (cfg.preset == "russiafix") [
           "--filter-tcp=80"
           "--dpi-desync=fake,split2"
           "--dpi-desync-autottl=2"
@@ -685,9 +738,7 @@ in {
           "--dpi-desync=fake"
           "--dpi-desync-repeats=11"
         ]
-        ++ lib.optionals (
-          cfg.preset == "renixos"
-        ) [
+        ++ optionals (cfg.preset == "renixos") [
           "--wssize 1:6"
 
           "--filter-tcp=80"
