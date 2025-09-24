@@ -1,10 +1,5 @@
 {
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    secret_files.url = "github:kotudemo/secret_files";
-    zapret-hostlists.url = "github:kotudemo/zapret-hostlists";
-  };
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
   outputs =
     inputs:
@@ -31,6 +26,11 @@
     {
       formatter = forAllSystems (pkgs: pkgs.nixfmt-rfc-style);
 
+      packages = forAllSystems (pkgs: {
+        hostlists = pkgs.callPackage ./packages/hostlists.nix { };
+        secrets = pkgs.callPackage ./packages/secrets.nix { };
+      });
+
       nixosModules.presets =
         {
           self,
@@ -39,10 +39,9 @@
           config,
           ...
         }:
-        import ./module.nix {
+        import ./modules/nixos.nix {
           inherit
             self
-            inputs
             pkgs
             lib
             config
