@@ -1,5 +1,12 @@
 {
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    hostlists = {
+      url = "github:Snowy-Fluffy/zapret.cfgs";
+      flake = false;
+    };
+  };
 
   outputs =
     inputs:
@@ -27,7 +34,11 @@
       formatter = forAllSystems (pkgs: pkgs.nixfmt-rfc-style);
 
       packages = forAllSystems (pkgs: {
-        hostlists = pkgs.callPackage ./packages/hostlists.nix { };
+        hostlists = pkgs.callPackage ./packages/hostlists.nix {
+          inherit
+            inputs
+            ;
+        };
         secrets = pkgs.callPackage ./packages/secrets.nix { };
       });
 

@@ -1,9 +1,9 @@
 {
+  inputs,
   lib,
   patchelf,
   makeWrapper,
   stdenv,
-  fetchFromGitHub,
   ...
 }:
 
@@ -11,12 +11,7 @@ stdenv.mkDerivation {
   name = "hostlists";
   version = "git";
 
-  src = fetchFromGitHub {
-    owner = "Snowy-Fluffy";
-    repo = "zapret.cfgs";
-    rev = "52e1b547c6e9ac96836b09eab89f3e9edb7bb69b";
-    hash = "sha256-ObCo3e+5VeUgY5J/NH2Ka7x9FC/a2z4Y/2y00XweN20=";
-  };
+  src = inputs.hostlists;
 
   nativeBuildInputs = [
     makeWrapper
@@ -29,7 +24,12 @@ stdenv.mkDerivation {
   dontFixup = true;
 
   installPhase = ''
+    runHook preInstall
+
+    mkdir $out
     cp -r . $out/
+
+    runHook postInstall
   '';
 
   meta = {
