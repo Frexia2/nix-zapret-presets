@@ -482,7 +482,7 @@ in
           "--dpi-desync-fooling=badseq"
           "--dpi-desync-fake-tls=${secrets}/tls_clienthello_www_google_com.bin"
         ]
-        ++ optionals (cfg.preset == "ultimatefix_mgts") [
+        ++ optionals (cfg.preset == "mega-ultimate") [
           "--filter-udp=443"
           "--hostlist=${hostlists}/lists/list-ultimate.txt"
           "--dpi-desync=fake"
@@ -513,7 +513,7 @@ in
           "--dpi-desync-fooling=badseq"
           "--dpi-desync-fake-tls=${secrets}/tls_clienthello_www_google_com.bin"
         ]
-        ++ optionals (cfg.preset == "ultimatefix_mgts") [
+        ++ optionals (cfg.preset == "testing") [
           "--filter-udp=443"
           "--hostlist=${hostlists}/lists/ipset-discord.txt"
           "--hostlist=${hostlists}/lists/list-discord.txt"
