@@ -34,12 +34,12 @@
       formatter = forAllSystems (pkgs: pkgs.nixfmt-rfc-style);
 
       packages = forAllSystems (pkgs: {
+        secrets = pkgs.callPackage ./packages/secrets.nix { };
         hostlists = pkgs.callPackage ./packages/hostlists.nix {
           inherit
             inputs
             ;
         };
-        secrets = pkgs.callPackage ./packages/secrets.nix { };
       });
 
       nixosModules.presets =
@@ -53,6 +53,7 @@
         import ./modules/nixos.nix {
           inherit
             self
+            inputs
             pkgs
             lib
             config
