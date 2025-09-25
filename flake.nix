@@ -9,11 +9,11 @@
   };
 
   outputs =
-    inputs:
+    { self, nixpkgs, hostlists, ... } @ inputs:
     let
       forAllSystems =
         f:
-        inputs.nixpkgs.lib.genAttrs
+        nixpkgs.lib.genAttrs
           [
             "x86_64-linux"
             "aarch64-linux"
@@ -22,10 +22,8 @@
           (
             system:
             f (
-              import inputs.nixpkgs {
-                inherit
-                  system
-                  ;
+              import nixpkgs {
+                inherit system;
               }
             )
           );
@@ -34,30 +32,27 @@
       formatter = forAllSystems (pkgs: pkgs.nixfmt-rfc-style);
 
       packages = forAllSystems (pkgs: {
-        secrets = pkgs.callPackage ./packages/secrets.nix { };
         hostlists = pkgs.callPackage ./packages/hostlists.nix {
-          inherit
-            inputs
-            ;
+          inherit inputs;
         };
+        secrets = pkgs.callPackage ./packages/secrets.nix { };
       });
 
       nixosModules.presets =
-        {
-          self,
-          pkgs,
-          lib,
-          config,
-          ...
-        }:
+        { self, pkgs, lib, config, ... }:
         import ./modules/nixos.nix {
-          inherit
-            self
-            inputs
-            pkgs
-            lib
-            config
-            ;
+          inherit self pkgs lib config;
         };
+
+      # FIXED: Properly pass self and inputs to the NixOS configuration
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        # Pass special arguments that modules might need
+        specialArgs = { inherit self inputs; };
+        modules = [
+          ./configuration.nix
+          self.nixosModules.presets
+        ];
+      };
     };
 }
