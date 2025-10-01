@@ -73,10 +73,13 @@
   services.zapret = {
     enable = false;
     sf_presets = {
-      enable = false;
+      enable = true;
       preset = "renixos";
     };
   };
+
+  # Cloudflare WARP
+  services.cloudflare-warp.enable = true;
 
   # Enabling Flatpak
  services.flatpak.enable = true;
@@ -128,6 +131,7 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
     abaddon
     # discord
     deadbeef
+    cloudflare-warp
     filezilla
     openvpn3
     telegram-desktop
