@@ -1,5 +1,5 @@
 {
-  inputs,
+  self,
   pkgs,
   lib,
   config,
@@ -8,12 +8,10 @@
 
 with lib;
 let
-  secrets = pkgs.callPackage ../packages/secrets.nix { };
-  hostlists = pkgs.callPackage ../packages/hostlists.nix {
-    inherit
-      inputs
-      ;
-  };
+  inherit (self.packages.${pkgs.system})
+    hostlists
+    secrets
+    ;
 
   cfg = config.services.zapret.sf_presets;
   blacklist =
@@ -56,6 +54,9 @@ in
         "ultimatefix_universalv2"
         "ultimatefix_universalv3"
         "ultimatefix_mgts"
+
+        "mega-ultimate"
+        "testing"
 
         "preset_russia"
         "russiafix"
@@ -453,6 +454,77 @@ in
         ++ optionals (cfg.preset == "ultimatefix_mgts") [
           "--filter-udp=443"
           "--hostlist=${hostlists}/lists/list-basic.txt"
+          "--dpi-desync=fake"
+          "--dpi-desync-repeats=6"
+          "--dpi-desync-fake-quic=${secrets}/quic_initial_www_google_com.bin"
+          "--new"
+
+          "--filter-udp=50000-65535"
+          "--hostlist=\"/opt/zapret/ipset/ipset-discord.txt\""
+          "--dpi-desync=fake"
+          "--dpi-desync-any-protocol"
+          "--dpi-desync-cutoff=d3"
+          "--dpi-desync-repeats=6"
+          "--new"
+
+          "--filter-tcp=80"
+          "--hostlist=${hostlists}/lists/list-basic.txt"
+          "--dpi-desync=fake,split2"
+          "--dpi-desync-autottl=2"
+          "--dpi-desync-fooling=md5sig"
+          "--new"
+
+          "--filter-tcp=443"
+          "--hostlist=${hostlists}/lists/list-basic.txt"
+          "--dpi-desync=fake"
+          "--dpi-desync-autottl=2"
+          "--dpi-desync-repeats=6"
+          "--dpi-desync-fooling=badseq"
+          "--dpi-desync-fake-tls=${secrets}/tls_clienthello_www_google_com.bin"
+        ]
+        ++ optionals (cfg.preset == "mega-ultimate") [
+          "--filter-udp=443"
+          "--hostlist=${hostlists}/lists/list-ultimate.txt"
+          "--dpi-desync=fake"
+          "--dpi-desync-repeats=6"
+          "--dpi-desync-fake-quic=${secrets}/quic_initial_www_google_com.bin"
+          "--new"
+
+          "--filter-udp=50000-65535"
+          "--hostlist=\"/opt/zapret/ipset/ipset-discord.txt\""
+          "--dpi-desync=fake"
+          "--dpi-desync-any-protocol"
+          "--dpi-desync-cutoff=d3"
+          "--dpi-desync-repeats=6"
+          "--new"
+
+          "--filter-tcp=80"
+          "--hostlist=${hostlists}/lists/list-basic.txt"
+          "--dpi-desync=fake,split2"
+          "--dpi-desync-autottl=2"
+          "--dpi-desync-fooling=md5sig"
+          "--new"
+
+          "--filter-tcp=443"
+          "--hostlist=${hostlists}/lists/list-basic.txt"
+          "--dpi-desync=fake"
+          "--dpi-desync-autottl=2"
+          "--dpi-desync-repeats=6"
+          "--dpi-desync-fooling=badseq"
+          "--dpi-desync-fake-tls=${secrets}/tls_clienthello_www_google_com.bin"
+        ]
+        ++ optionals (cfg.preset == "testing") [
+          "--filter-udp=443"
+          "--hostlist=${hostlists}/lists/ipset-discord.txt"
+          "--hostlist=${hostlists}/lists/list-discord.txt"
+          "--hostlist=${hostlists}/lists/list-instagram.txt"
+          "--hostlist=${hostlists}/lists/list-nnmclub.txt"
+          "--hostlist=${hostlists}/lists/list-rezka.txt"
+          "--hostlist=${hostlists}/lists/list-rutracker.txt"
+          "--hostlist=${hostlists}/lists/list-spotify.txt"
+          "--hostlist=${hostlists}/lists/list-telegram.txt"
+          "--hostlist=${hostlists}/lists/list-twitch.txt"
+          "--hostlist=${hostlists}/lists/list-youtube.txt"
           "--dpi-desync=fake"
           "--dpi-desync-repeats=6"
           "--dpi-desync-fake-quic=${secrets}/quic_initial_www_google_com.bin"

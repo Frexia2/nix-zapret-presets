@@ -69,22 +69,12 @@
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
 
-  # Starting Cloudflare WARP
-  systemd.packages = [ pkgs.cloudflare-warp ]; # for warp-cli
-  systemd.targets.multi-user.wants = [ "warp-svc.service" ]; # causes warp-svc to be started automatically
-
-  # Starting OpenVPN service
-  programs.openvpn3.enable = true;
-
-  # Enabling AmneziaVPN service
-  programs.amnezia-vpn.enable = true;
-
   # Zapret (kill me)
   services.zapret = {
-    enable = true;
+    enable = false;
     sf_presets = {
-      enable = true;
-      preset = "preset_russia";
+      enable = false;
+      preset = "renixos";
     };
   };
 
@@ -137,7 +127,6 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
   environment.systemPackages = with pkgs; [
     abaddon
     # discord
-    cloudflare-warp
     deadbeef
     filezilla
     openvpn3
