@@ -6,10 +6,16 @@
       url = "github:Snowy-Fluffy/zapret.cfgs";
       flake = false;
     };
+
+    # Add Home Manager input
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";  # Use same nixpkgs as system
+    };
   };
 
   outputs =
-    { self, nixpkgs, hostlists, ... } @ inputs:
+    { self, nixpkgs, hostlists, home-manager, ... } @ inputs:  # Add home-manager to inputs
     let
       forAllSystems =
         f:
@@ -44,14 +50,23 @@
           inherit self pkgs lib config;
         };
 
-      # FIXED: Properly pass self and inputs to the NixOS configuration
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        # Pass special arguments that modules might need
         specialArgs = { inherit self inputs; };
         modules = [
           ./configuration.nix
           self.nixosModules.presets
+          # Add Home Manager module
+          home-manager.nixosModules.home-manager
+          {
+            # Home Manager configuration
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.frexia = import ./home.nix;
+            
+            # Optional: You can also add extra specialArgs for home-manager if needed
+            home-manager.extraSpecialArgs = { inherit self inputs; };
+          }
         ];
       };
     };

@@ -32,13 +32,16 @@
   };
 
   services.xserver.enable = true;
-
-  # Enable the Cinnamon Desktop Environment.
   services.displayManager.ly = {
 	enable = true;
   };
-  services.xserver.desktopManager.cinnamon.enable = true;  
- 
+  services.gnome.gnome-keyring.enable = true;
+  services.udisks2.enable = true;
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+}; 
+
   services.xserver.xkb = {
     layout = "us";
     variant = "";
@@ -50,7 +53,6 @@
 };
   services.printing.enable = true;
 
-  # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -60,7 +62,6 @@
     pulse.enable = true;
    };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.frexia = {
     isNormalUser = true;
     description = "Frexia";
@@ -69,9 +70,8 @@
     ];
   };
 
-  # Install Mullvad VPN
   services.mullvad-vpn.enable = true;
-  services.mullvad-vpn.package = pkgs.mullvad-vpn;
+  services.mullvad-vpn.package = pkgs.mullvad;
 
   # Zapret (kill me)
   services.zapret = {
@@ -82,11 +82,9 @@
     };
   };
 
-  # Cloudflare WARP
   services.cloudflare-warp.enable = true;
-
-  # Enabling Flatpak
- services.flatpak.enable = true;
+  services.tlp.enable = true;
+  services.flatpak.enable = true;
 
   # Enabling systemd-resolved
   networking.nameservers = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
@@ -99,18 +97,15 @@
   		dnsovertls = "true";
 	};
 
-  # Install firefox.
   programs.firefox.enable = true;
 
-  # Getting Steam
   programs.steam = {
   enable = true;
-  remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-  dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-  localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  remotePlay.openFirewall = true;
+  dedicatedServer.openFirewall = true; 
+  localNetworkGameTransfers.openFirewall = true;
 };
 
-  # Clearing generations
   nix.gc = {
 	automatic = true;
 	dates = "weekly";
@@ -119,18 +114,19 @@
 
 nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Auto-upgrades
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = false;
 
-  # Allow unfree packages
+  home-manager = {
+	users = {
+	"frexia" = import ./home.nix;
+	};
+};
+
   nixpkgs.config.allowUnfree = true;
 
-  # Allow ADB
   programs.adb.enable = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     #APPS AND TOOLS
     abaddon
@@ -144,6 +140,7 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
     kew
     libreoffice-fresh
     mate.engrampa
+    nemo
     nh
     obsidian
     scrcpy
@@ -152,13 +149,29 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
     qbittorrent
     #BYPASSING CENSORSHIP
     cloudflare-warp
+    #CUSTOMIZATION
+    bibata-cursors
+    dconf
+    dconf-editor
+    lxappearance
+    mint-x-icons
+    themix-gui
+    #DEPENDENCIES
+    pamixer # for sway-bar volume
+    jq # sorting algorithm
     #MESSAGING AND SOCIALS
     telegram-desktop
     signal-desktop
+    #SWAY
+    grim
+    slurp
+    wl-clipboard
+    mako
     #WINE
-    wineWowPackages.staging
+    wine-staging
     winetricks
   ];
-  system.stateVersion = "25.05"; # Did you read the comment?
+
+  system.stateVersion = "25.05";
 
 }
