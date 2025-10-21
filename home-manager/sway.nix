@@ -1,12 +1,8 @@
 { config, pkgs, ... }:
 
-{
-
-home = {
-
-	file.".config/sway/sway-bar.sh" = {
-	executable = true;
-	text = ''
+let
+	swaybarscript = pkgs.writeShellScriptBin "sway-bar" ''
+#!/bin/sh
 status_bar() {
     date=$(date +'%d-%m-%Y %X')
     vol=$(pamixer --get-volume)
@@ -69,9 +65,9 @@ media_status() {
         title=$(playerctl metadata title 2>/dev/null)
 
         if [ -n "$artist" ]; then
-            echo "${artist:0:15} - ${title:0:20}|"
+            echo "''${artist:0:15} - ''${title:0:20}|"
         else
-            echo "${title:0:35}|"
+            echo "''${title:0:35}|"
         fi
     else
         echo ""
@@ -93,10 +89,8 @@ while true; do
     sleep 1
 done
 '';
-};
-
-};
-
+in {
+home.packages = [ swaybarscript ];
 wayland.windowManager = {
 	sway = {
 		enable = true;
@@ -245,7 +239,7 @@ bindsym $mod+r mode "resize"
 bar {
     position bottom
 
-  status_command ~/.config/sway/sway-bar.sh
+  status_command ${swaybarscript}/bin/sway-bar
     colors {
         statusline #ffffff
         background #323232
@@ -256,7 +250,7 @@ bar {
 
 include /etc/sway/config.d/*
 				
-'';
+			'';
+		};
 	};
-};
 }
