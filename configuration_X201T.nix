@@ -56,14 +56,9 @@
 	};
 	cloudflare-warp.enable = true;
 	tlp.enable = true;
-	flatpak.enable = true;
 	dbus.enable = true;
 };
-  programs = {
-	sway = {
-		enable = true;
-		wrapperFeatures.gtk = true;
-	};
+ programs = {
 	firefox.enable = true;
 	steam = {
 		enable = true;
@@ -130,6 +125,8 @@
 		cloudflare-warp
 		#DEPENDENCIES
 		pamixer # for sway-bar volume
+		playerctl # for sway-bar media
+		pulseaudio # because I need pactl
 		jq
 		#MESSAGING AND SOCIALS
 		telegram-desktop
@@ -138,7 +135,7 @@
 		grim
 		slurp
 		wl-clipboard
-		mako
+		wmenu
 		#WINE
 		wine-staging
  		winetricks
