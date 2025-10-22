@@ -1,5 +1,4 @@
 { config, pkgs, ... }:
-
 {
 programs.firefox = {
       enable = true;
@@ -11,20 +10,15 @@ programs.firefox = {
           settings = {
 #	========== GENERAL SETTINGS ==========
 	# Theming
-	"browser.display.background_color" = "#191724";
-	"browser.display.foreground_color" = "#e0def4";
-	"browser.anchor_color" = "#9ccfd8";
-	"browser.visited_color" = "#c4a7e7";
-	"reader.color_scheme" = "dark";
-	"reader.content_color" = "#e0def4";
-	"reader.bg_color" = "#191724";
-	"devtools.theme" = "dark";
 	"toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-        "ui.systemUsesDarkTheme" = 1;
-        "browser.theme.toolbar-theme" = 0; # Dark toolbar
+        "svg.context-properties.content.enabled" = true;
+        "layout.css.color-mix.enabled" = true;
+	"browser.tabs.drawInTitlebar" = true;
+
 	# Searching
         "browser.search.defaultenginename" = "ddg";
         "browser.search.order.1" = "ddg";
+
 	# Misc.
         "widget.use-xdg-desktop-portal.file-picker" = 1;
         "browser.aboutConfig.showWarning" = false;
@@ -58,7 +52,30 @@ programs.firefox = {
         "experiments.supported" = false;
         "experiments.enabled" = false;
         "experiments.manifest.uri" = "";
+
+	# ========== CLEANING ON CLOSE ==========
+	"privacy.sanitize.sanitizeOnShutdown" = true;
+        "privacy.clearOnShutdown.cache" = true;
+        "privacy.clearOnShutdown.downloads" = true;
+        "privacy.clearOnShutdown.formData" = true;
+        "privacy.clearOnShutdown.history" = true;
+        "privacy.clearOnShutdown.sessions" = true;
+        "privacy.clearOnShutdown.cookies" = true;
+        "privacy.clearOnShutdown.offlineApps" = true;
+        "privacy.clearOnShutdown.siteSettings" = true;
+	"privacy.clearOnShutdown.extensions" = false;
+	"privacy.clearOnShutdown.extensions-settings" = false;
         
+        # What to clear (enable all)
+        "privacy.cpd.cache" = true;
+        "privacy.cpd.downloads" = true;
+        "privacy.cpd.formData" = true;
+        "privacy.cpd.history" = true;
+        "privacy.cpd.sessions" = true;
+        "privacy.cpd.cookies" = true;
+        "privacy.cpd.offlineApps" = true;
+        "privacy.cpd.siteSettings" = true;        
+
         # ========== CRASH REPORTING ==========
         "breakpad.reportURL" = "";
         "browser.tabs.crashReporting.sendReport" = false;
@@ -171,175 +188,20 @@ programs.firefox = {
         # ========== HTTPS-ONLY MODE ==========
         "dom.security.https_only_mode" = true;
         "dom.security.https_only_mode_ever_enabled" = true;
+
 	# ========== EXTENSIONS MANAGMENT ==========
 	"extensions.autoDisableScopes" = 0;
+	"extensions.webextensions.restrictedDomains" = "";
+	"extensions.experiments.enabled" = true;
 
-	userChrome = ''
-        /* Rose Pine Color Scheme - Main Palette */
-        :root {
-          /* Base Colors */
-          --base: #191724;
-          --surface: #1f1d2e;
-          --overlay: #26233a;
-          --muted: #6e6a86;
-          --subtle: #908caa;
-          --text: #e0def4;
-          --love: #eb6f92;
-          --gold: #f6c177;
-          --rose: #ebbcba;
-          --pine: #31748f;
-          --foam: #9ccfd8;
-          --iris: #c4a7e7;
-          --highlight-low: #21202e;
-          --highlight-med: #403d52;
-          --highlight-high: #524f67;
-        }
-
-        /* Apply to main browser UI */
-        #navigator-toolbox {
-          background: var(--base) !important;
-          color: var(--text) !important;
-          border-bottom: 1px solid var(--overlay) !important;
-        }
-
-        /* Toolbar */
-        #nav-bar {
-          background: var(--base) !important;
-          color: var(--text) !important;
-          border-bottom: 1px solid var(--overlay) !important;
-        }
-
-        /* Tabs */
-        .tabbrowser-tab {
-          color: var(--text) !important;
-        }
-
-        .tab-background {
-          background: var(--surface) !important;
-          border: 1px solid var(--overlay) !important;
-          margin: 2px 1px !important;
-          border-radius: 6px !important;
-        }
-
-        .tabbrowser-tab[selected] .tab-background {
-          background: var(--overlay) !important;
-          border-color: var(--pine) !important;
-        }
-
-        .tab-line {
-          background: var(--pine) !important;
-        }
-
-        /* URL Bar */
-        #urlbar {
-          background: var(--surface) !important;
-          color: var(--text) !important;
-          border: 1px solid var(--overlay) !important;
-          border-radius: 8px !important;
-        }
-
-        #urlbar:hover {
-          background: var(--overlay) !important;
-          border-color: var(--highlight-med) !important;
-        }
-
-        #urlbar[focused] {
-          border-color: var(--pine) !important;
-          box-shadow: 0 0 0 1px var(--pine) !important;
-        }
-
-        /* Sidebar */
-        #sidebar-box {
-          background: var(--base) !important;
-          color: var(--text) !important;
-        }
-
-        sidebarheader {
-          background: var(--surface) !important;
-          color: var(--text) !important;
-          border-bottom: 1px solid var(--overlay) !important;
-        }
-
-        /* Bookmarks Toolbar */
-        #PersonalToolbar {
-          background: var(--surface) !important;
-          border-top: 1px solid var(--overlay) !important;
-        }
-
-        /* Buttons */
-        toolbarbutton {
-          color: var(--text) !important;
-          background: transparent !important;
-          border: none !important;
-        }
-
-        toolbarbutton:hover {
-          background: var(--overlay) !important;
-          border-radius: 4px !important;
-        }
-
-        /* Menu */
-        menupopup {
-          background: var(--surface) !important;
-          color: var(--text) !important;
-          border: 1px solid var(--overlay) !important;
-          border-radius: 8px !important;
-        }
-
-        menuitem, menu {
-          color: var(--text) !important;
-        }
-
-        menuitem:hover, menu:hover {
-          background: var(--overlay) !important;
-        }
-
-        /* Scrollbars */
-        scrollbar {
-          background: var(--base) !important;
-        }
-
-        scrollbarthumb {
-          background: var(--overlay) !important;
-          border-radius: 8px !important;
-        }
-
-        scrollbarthumb:hover {
-          background: var(--highlight-med) !important;
-        }
-	
-	/* Find Bar */
-        findbar {
-          background: var(--base) !important;
-          color: var(--text) !important;
-          border-top: 1px solid var(--overlay) !important;
-        }
-
-        /* Progress indicator */
-        .tab-progress {
-          background: var(--pine) !important;
-        }
-      '';
-      
-      userContent = ''
-        /* Optional: Apply Rose Pine to web content scrollbars */
-        :root {
-          scrollbar-color: var(--overlay) var(--base);
-        }
-
-        /* Style selection text */
-        ::selection {
-          background: var(--pine) !important;
-          color: var(--text) !important;
-        }
-      '';
-          };
+      	};
 	extensions = {
 		packages = with pkgs.nur.repos.rycee.firefox-addons; [
     		ublock-origin
 		darkreader
 		sponsorblock
 		h264ify
+		firefox-color
   		];
 	};
 
