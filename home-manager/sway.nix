@@ -120,7 +120,7 @@ output * bg ${./wallpaper.png} fill
 
    input type:keyboard {
        xkb_layout us,ru
-       xkb_options grp:lalt_lshift_toggle
+       xkb_options grp:alt_shift_toggle
    }
 
 gaps inner 4
@@ -137,15 +137,15 @@ client.placeholder	#330066 #141216 #ffe6f2 #330066 #330066
 
 seat seat0 xcursor_theme Bibata-Modern-Classic 16
 
-    bindsym Mod1+Q exec $term
-    bindsym $mod+c kill
-    bindsym $mod+d exec $menu
+    bindcode Mod1+24 exec $term # q
+    bindcode $mod+54 kill # c
+    bindcode $mod+40 exec $menu # d
 
     floating_modifier $mod normal
 
-    bindsym $mod+Shift+c reload
+    bindcode $mod+Shift+54 reload # r
 
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+    bindcode $mod+Shift+26 exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit' # e
 
     bindsym $mod+$left focus left
     bindsym $mod+$down focus down
@@ -190,20 +190,20 @@ seat seat0 xcursor_theme Bibata-Modern-Classic 16
     bindsym $mod+Shift+0 move container to workspace number 10
 
 
-    bindsym $mod+b splith
-    bindsym $mod+v splitv
+    bindcode $mod+56 splith # b
+    bindcode $mod+55 splitv # v
 
-    bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
-    bindsym $mod+e layout toggle split
+    bindcode $mod+39 layout stacking # s
+    bindcode $mod+25 layout tabbed # w
+    bindcode $mod+26 layout toggle split # e
 
-    bindsym $mod+f fullscreen
+    bindcode $mod+41 fullscreen # ебало опусти
 
-    bindsym Mod1+f floating toggle
+    bindcode Mod1+41 floating toggle # f
 
     bindsym $mod+space focus mode_toggle
 
-    bindsym $mod+a focus parent
+    bindcode $mod+38 focus parent # a
 
     bindsym $mod+Shift+minus move scratchpad
 
@@ -224,7 +224,7 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+r mode "resize"
+bindcode $mod+27 mode "resize" # r
 
     bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
     bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
