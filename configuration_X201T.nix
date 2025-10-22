@@ -41,7 +41,7 @@
 	mullvad-vpn.enable = true;
 	mullvad-vpn.package = pkgs.mullvad;
 	zapret = {
-		enable = true;
+		enable = false;
 		sf_presets = {
 			enable = true;
 			preset = "renixos";
@@ -59,7 +59,7 @@
 	dbus.enable = true;
 };
  programs = {
-	firefox.enable = true;
+	sway.enable = true;
 	steam = {
 		enable = true;
 		remotePlay.openFirewall = true;
@@ -102,44 +102,15 @@
   environment = {
 	systemPackages = with pkgs; [
 		#APPS AND TOOLS
-		abaddon
-		ani-cli
-		btop
-		fastfetch
-		feh
+		dconf
 		ffmpeg
-		filezilla
-		git
-		keepassxc
-		kew
-		libreoffice-fresh
-		mate.engrampa
-		nemo
 		nh
-		obsidian
-		scrcpy
-		vim
-		vlc
-		qbittorrent
-		#BYPASSING CENSORSHIP
 		cloudflare-warp
-		#DEPENDENCIES
 		pamixer # for sway-bar volume
 		playerctl # for sway-bar media
 		pulseaudio # because I need pactl
 		jq
-		#MESSAGING AND SOCIALS
-		telegram-desktop
-		signal-desktop
-		#SWAY
-		grim
-		slurp
-		wl-clipboard
-		wmenu
-		#WINE
-		wine-staging
- 		winetricks
 	];
 };
-  system.stateVersion = "25.05";
+system.stateVersion = "25.05";
 }
