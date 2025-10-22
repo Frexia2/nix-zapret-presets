@@ -7,15 +7,18 @@
       flake = false;
     };
 
-    # Add Home Manager input
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";  # Use same nixpkgs as system
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs =
-    { self, nixpkgs, hostlists, home-manager, ... } @ inputs:  # Add home-manager to inputs
+    { self, nixpkgs, hostlists, home-manager, nur, ... } @ inputs:
     let
       forAllSystems =
         f:
@@ -30,6 +33,7 @@
             f (
               import nixpkgs {
                 inherit system;
+		overlays = [ nur.overlays.default ];
               }
             )
           );
@@ -56,17 +60,27 @@
         modules = [
           ./configuration.nix
           self.nixosModules.presets
-          # Add Home Manager module
           home-manager.nixosModules.home-manager
           {
-            # Home Manager configuration
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.frexia = import ./home.nix;
-            
-            # Optional: You can also add extra specialArgs for home-manager if needed
+            home-manager.users.frexia = {
+	    imports =[  ./home-manager/services.nix
+			./home-manager/theming.nix
+			./home-manager/preferences.nix
+			./home-manager/sway.nix
+			./home-manager/mako.nix
+			./home-manager/foot.nix
+			./home-manager/firefox.nix
+			./home-manager/apps.nix
+		];
+	    };
             home-manager.extraSpecialArgs = { inherit self inputs; };
           }
+
+	  {
+		 nixpkgs.overlays = [ nur.overlays.default ];
+	  }
         ];
       };
     };
