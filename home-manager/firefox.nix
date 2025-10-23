@@ -215,11 +215,31 @@ programs.firefox = {
     ];
   };
 	search = {
-		force = true;
-		default = "ddg";
-		order = [ "ddg" ];
+		default = "ddg-html";
+      		force = true;
+      
+      engines = {
+        "ddg-html" = {
+          urls = [{
+            template = "https://html.duckduckgo.com/html/";
+            params = [
+              { name = "q"; value = "{searchTerms}"; }
+            ];
+          }];
+          definedAliases = [ "@ddg" "@html" ];
+        };
+	"ddg" = {
+          urls = [{
+            template = "https://duckduckgo.com/";
+            params = [
+              { name = "q"; value = "{searchTerms}"; }
+            ];
+          }];
+          definedAliases = [ "@ddg-js" ];
+        };
           };
         };
       };
     };
+  };
 }
