@@ -73,6 +73,7 @@
 			./home-manager/foot.nix
 			./home-manager/firefox.nix
 			./home-manager/apps.nix
+			./home-manager/fastfetch.nix
 		];
 	    };
             home-manager.extraSpecialArgs = { inherit self inputs; };
