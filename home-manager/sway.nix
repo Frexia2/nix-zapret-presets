@@ -111,7 +111,6 @@ set $menu wmenu-run
 
 font monospace 10
 
-exec udiskie
 output * bg ${./wallpaper.png} fill
 
    input type:touchpad {
@@ -143,7 +142,8 @@ seat seat0 xcursor_theme Bibata-Modern-Classic 16
 
     floating_modifier $mod normal
 
-    bindcode $mod+Shift+54 reload # r
+    bindsym $mod+Shift+r reload
+    bindsym $mod+Shift+Cyrillic_ka reload
 
     bindcode $mod+Shift+26 exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit' # e
 
@@ -190,20 +190,26 @@ seat seat0 xcursor_theme Bibata-Modern-Classic 16
     bindsym $mod+Shift+0 move container to workspace number 10
 
 
-    bindcode $mod+56 splith # b
-    bindcode $mod+55 splitv # v
+    bindsym $mod+b splith
+    bindsym $mod+Cyrillic_i splith
+
+    bindsym $mod+v splitv
+    bindsym $mod+Cyrillic_em splitv
 
     bindcode $mod+39 layout stacking # s
     bindcode $mod+25 layout tabbed # w
     bindcode $mod+26 layout toggle split # e
 
-    bindcode $mod+41 fullscreen # ебало опусти
+    bindsym $mod+f fullscreen # ебало опусти
+    bindsym $mod+Cyrillic_a fullscreen
 
-    bindcode Mod1+41 floating toggle # f
+    bindsym Mod1+f floating toggle # f
+    bindsym Mod1+Cyrillic_a floating toggle
 
     bindsym $mod+space focus mode_toggle
 
-    bindcode $mod+38 focus parent # a
+    bindsym $mod+a focus parent
+    bindsym $mod+Cyrillic_ef focus parent
 
     bindsym $mod+Shift+minus move scratchpad
 
@@ -224,7 +230,8 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindcode $mod+27 mode "resize" # r
+bindsym $mod+r mode "resize"
+bindsym $mod+Cyrillic_ka mode "resize"
 
     bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
     bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
