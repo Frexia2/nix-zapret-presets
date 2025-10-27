@@ -100,11 +100,17 @@ wayland.windowManager = {
 
 		extraConfig = ''
 set $mod Mod4
+set $alt Mod1
 
-set $left h
-set $down j
-set $up k
+set $left j
+set $down k
+set $up i
 set $right l
+
+set $left_ru Cyrillic_o
+set $down_ru Cyrillic_el
+set $up_ru Cyrillic_sha
+set $right_ru Cyrillic_de
 
 set $term foot
 set $menu wmenu-run
@@ -151,7 +157,12 @@ seat seat0 xcursor_theme Bibata-Modern-Classic 16
     bindsym $mod+$down focus down
     bindsym $mod+$up focus up
     bindsym $mod+$right focus right
-    
+
+    bindsym $mod+$left_ru focus left
+    bindsym $mod+$down_ru focus down
+    bindsym $mod+$up_ru focus up
+    bindsym $mod+$right_ru focus right
+
     bindsym $mod+Left focus left
     bindsym $mod+Down focus down
     bindsym $mod+Up focus up
@@ -161,6 +172,11 @@ seat seat0 xcursor_theme Bibata-Modern-Classic 16
     bindsym $mod+Shift+$down move down
     bindsym $mod+Shift+$up move up
     bindsym $mod+Shift+$right move right
+
+    bindsym $mod+Shift+$left_ru move left
+    bindsym $mod+Shift+$down_ru move down
+    bindsym $mod+Shift+$up_ru move up
+    bindsym $mod+Shift+$right_ru move right
 
     bindsym $mod+Shift+Left move left
     bindsym $mod+Shift+Down move down
@@ -200,11 +216,9 @@ seat seat0 xcursor_theme Bibata-Modern-Classic 16
     bindcode $mod+25 layout tabbed # w
     bindcode $mod+26 layout toggle split # e
 
-    bindsym $mod+f fullscreen # ебало опусти
-    bindsym $mod+Cyrillic_a fullscreen
+    bindsym --to-code $mod+f fullscreen
 
-    bindsym Mod1+f floating toggle # f
-    bindsym Mod1+Cyrillic_a floating toggle
+    bindsym --to-code $alt+f floating toggle
 
     bindsym $mod+space focus mode_toggle
 
