@@ -117,7 +117,7 @@ set $menu wmenu-run
 
 font monospace 10
 
-output * bg ${./wallpaper.png} fill
+output * bg ${./wallpaper.jpg} fill
 
    input type:touchpad {
  	 events disabled
@@ -232,13 +232,18 @@ seat seat0 xcursor_theme Bibata-Modern-Classic 16
 mode "resize" {
 
     bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
+    bindsym $down resize shrink height 10px
+    bindsym $up resize grow height 10px
     bindsym $right resize grow width 10px
 
+    bindsym $left_ru resize shrink width 10px
+    bindsym $down_ru resize shrink height 10px
+    bindsym $up_ru resize grow height 10px
+    bindsym $right_ru resize grow width 10px
+
     bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
+    bindsym Down resize shrink height 10px
+    bindsym Up resize grow height 10px
     bindsym Right resize grow width 10px
 
     bindsym Return mode "default"

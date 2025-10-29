@@ -7,7 +7,7 @@
     settings = {
 
       logo = {
-	source = "nixos_old";
+	source = "nixos";
         type = "auto";
 	color = {
         "1" = "#cc99ff";
@@ -16,28 +16,28 @@
     };
 
       modules = [
-        "break"
+	"break"
         "title"
         "separator"
         "os"
         "kernel"
         "packages"
-        "font"
+	"font"
         "display"
         "terminal"
-        "lm"
+	"lm"
         "wm"
-	      "bios"
+	"bios"
         "cpu"
-	      "cpucache"
+	"cpucache"
         "gpu"
-	      "opengl"
+	"opengl"
         "memory"
-	      "swap"
+	"swap"
         "disk"
         "uptime"
-	      "battery"
-        "colors"
+	"battery"
+	"colors"
       ];
     };
   };

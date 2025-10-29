@@ -4,24 +4,24 @@
     [ 
       ./hardware-configuration.nix
     ];
-  boot = {
+boot = {
 	loader.grub.enable = true;
 	loader.grub.device = "/dev/sda";
 	kernelPackages = pkgs.linuxPackages_zen;
 };
-  networking = {
+networking = {
 	hostName = "nixos";
 	networkmanager.enable = true;
 	nameservers = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
 };
   time.timeZone = "Asia/Krasnoyarsk";
-  i18n = {
+i18n = {
 	defaultLocale = "en_US.UTF-8";
 	extraLocaleSettings = {
 		LC_TIME = "ru_RU.UTF-8";
 	};
 };
-  services = {
+services = {
 	xserver.enable = true;
 	displayManager.ly = {
 	enable = true;
@@ -54,11 +54,12 @@
   		fallbackDns = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
   		dnsovertls = "true";
 	};
-	cloudflare-warp.enable = true;
+	cloudflare-warp.enable = false;
 	tlp.enable = true;
 	dbus.enable = true;
+	flatpak.enable = true;
 };
- programs = {
+programs = {
 	sway.enable = true;
 	steam = {
 		enable = true;
@@ -68,22 +69,25 @@
 	};
 	adb.enable = true;
 }; 
- hardware = {
+hardware = {
 	graphics = {
 		enable = true;
 		enable32Bit = true;
 	};
 	bluetooth.enable = true;
 };
-  security.rtkit.enable = true;
-  users.users.frexia = {
-    isNormalUser = true;
-    description = "Frexia";
-    extraGroups = [ "networkmanager" "wheel" "adbusers" ];
-    packages = with pkgs; [
-    ];
-  };
-  nix = {
+security.rtkit.enable = true;
+users = {
+	users.frexia = {
+		isNormalUser = true;
+		description = "Frexia";
+		extraGroups = [ "networkmanager" "wheel" "adbusers" ];
+		packages = with pkgs; [
+		];
+	};
+	extraGroups.vboxusers.members = [ "frexia" ];
+};
+nix = {
 	gc = {
 		automatic = true;
 		dates = "weekly";
@@ -91,26 +95,35 @@
 	};
 	settings.experimental-features = [ "nix-command" "flakes" ];
 };
-  system.autoUpgrade = {
+system.autoUpgrade = {
 	enable = true;
 	allowReboot = false;
 };
-  nixpkgs.config = {
+nixpkgs.config = {
 	allowUnfree = true;
 };
-  fonts.packages = with pkgs; [ nerd-fonts._0xproto nerd-fonts.droid-sans-mono ];
-  environment = {
+virtualisation = {
+	virtualbox.host.enable = true;
+};
+fonts.packages = with pkgs; [ nerd-fonts._0xproto nerd-fonts.droid-sans-mono ];
+environment = {
 	systemPackages = with pkgs; [
 		#APPS AND TOOLS
 		dconf
 		ffmpeg
 		nh
 		cloudflare-warp
+		keepassxc
 		pamixer # for sway-bar volume
 		playerctl # for sway-bar media
 		pulseaudio # because I need pactl
+		jdk8
 		jq
+		wget
 	];
+	sessionVariables = {
+		QT_QPA_PLATFORMTHEME = "qt6ct";
+	};
 };
 system.stateVersion = "25.05";
 }

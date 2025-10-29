@@ -5,16 +5,16 @@ home.packages = with pkgs; [
 	abaddon
 	ani-cli
 	btop
-	fastfetch
+	deadbeef
 	feh
 	git
-	keepassxc
 	kew
 	libreoffice-fresh
 	mate.engrampa
 	nemo
 	obsidian
 	scrcpy
+	tg
 	vim
 	vlc
 	qbittorrent
@@ -22,7 +22,9 @@ home.packages = with pkgs; [
 	signal-desktop
 	grim
 	slurp
+	quakespasm
 	wl-clipboard
+	wf-recorder
 	wmenu
 	wine-staging
 	winetricks

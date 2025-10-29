@@ -18,6 +18,8 @@
         "image/*" = ["feh.desktop"];
         "image/png" = ["feh.desktop"];
         "image/jpeg" = ["feh.desktop"];
+	"x-scheme-handler/terminal" = ["foot.desktop"];
+	"application/x-terminal" = ["foot.desktop"];
       };
     };
     portal = {
