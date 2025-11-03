@@ -125,7 +125,7 @@ output * bg ${./wallpaper.jpg} fill
 
    input type:keyboard {
        xkb_layout us,ru
-       xkb_options grp:alt_shift_toggle
+       xkb_options grp:caps_toggle
    }
 
 gaps inner 4
@@ -134,7 +134,7 @@ gaps outer 2
 default_border pixel 3
 default_floating_border pixel 3
 
-client.focused 		#4d0099 #141216 #ffe6f2 #4d0099 #4d0099
+client.focused 		#7733ff #141216 #ffe6f2 #7733ff #7733ff
 client.focused_inactive #330066 #141216 #ffe6f2 #330066 #330066
 client.unfocused	#330066 #141216 #ffe6f2 #330066 #330066
 client.urgent		#ecb3ff #141216 #ffe6f2 #ecb3ff #ecb3ff
