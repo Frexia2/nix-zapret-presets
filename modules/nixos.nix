@@ -8,7 +8,7 @@
 
 with lib;
 let
-  inherit (self.packages.${pkgs.system})
+  inherit (self.packages.${pkgs.stdenv.hostPlatform.system})
     hostlists
     secrets
     ;
