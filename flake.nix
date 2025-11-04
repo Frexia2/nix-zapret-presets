@@ -30,12 +30,13 @@
           ]
           (
             system:
-            f (
-              import nixpkgs {
+            let
+              pkgs = import nixpkgs {
                 inherit system;
-		overlays = [ nur.overlays.default ];
-              }
-            )
+                overlays = [ nur.overlays.default ];
+              };
+            in
+            f pkgs
           );
     in
     {
