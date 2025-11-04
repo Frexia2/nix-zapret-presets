@@ -120,6 +120,7 @@ environment = {
 		jdk8
 		jq
 		wget
+		wiremix
 	];
 	sessionVariables = {
 		QT_QPA_PLATFORMTHEME = "qt6ct";
