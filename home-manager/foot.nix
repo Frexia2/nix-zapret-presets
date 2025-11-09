@@ -5,7 +5,7 @@ programs.foot = {
 
 	settings = {
 		main = {
-			font = "monospace:size=10";
+			font = "JetBrainsMono Nerd Font Mono:size=10";
 		};
 	colors = {
 
